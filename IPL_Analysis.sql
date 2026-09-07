@@ -1,6 +1,27 @@
 use apna;
 show tables;
 
+CREATE TABLE matches (
+    id INT,
+    season INT,
+    city VARCHAR(50),
+    date DATE,
+    team1 VARCHAR(100),
+    team2 VARCHAR(100),
+    toss_winner VARCHAR(100),
+    toss_decision VARCHAR(20),
+    result VARCHAR(30),
+    dl_applied INT,
+    winner VARCHAR(100),
+    win_by_runs INT,
+    win_by_wickets INT,
+    player_of_match VARCHAR(100),
+    venue VARCHAR(150),
+    umpire1 VARCHAR(100),
+    umpire2 VARCHAR(100),
+    umpire3 VARCHAR(100)
+);
+
 -- 1 Display all records from the matches table.
 SELECT 
     *
@@ -275,3 +296,15 @@ FROM
 GROUP BY player_of_match
 ORDER BY award_count DESC
 LIMIT 1;
+
+-- 37 )Find the most common toss winner across all IPL matches.
+SELECT 
+    toss_winner, COUNT(toss_winner) AS number_of_toss_win
+FROM
+    matches
+GROUP BY toss_winner
+ORDER BY number_of_toss_win DESC
+limit 1;
+
+-- 38 )Find the team that has the highest number of wins by 10 wickets.
+
