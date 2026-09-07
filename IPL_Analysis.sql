@@ -21,6 +21,9 @@ CREATE TABLE matches (
     umpire2 VARCHAR(100),
     umpire3 VARCHAR(100)
 );
+DESC matches;
+
+SELECT * FROM matches;
 
 -- 1 Display all records from the matches table.
 SELECT 
