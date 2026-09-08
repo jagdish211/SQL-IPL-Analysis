@@ -162,9 +162,8 @@ ORDER BY matches_win_by_each_team DESC;
 
 -- 20 Find the team with the highest number of wins.
     
-
-
-
+    
+    
 -- 21 )Find the team with the lowest number of wins.
 SELECT winner, COUNT(*) AS total_wins
 FROM matches
@@ -309,5 +308,126 @@ GROUP BY toss_winner
 ORDER BY number_of_toss_win DESC
 limit 1;
 
--- 38 )Find the team that has the highest number of wins by 10 wickets.
+-- 38) Find players of the match whose names start with S.
+select * from matches
+where player_of_match like 's%';
 
+-- 39)Find players of the match whose names end with Singh.
+select * from matches
+where player_of_match like '%singh';
+
+-- 40) Find venues containing the word Stadium.
+select * from matches
+where venue like '%Stadium';
+
+-- 41)Find teams containing the word Royal.
+SELECT DISTINCT team
+FROM (
+    SELECT team1 AS team
+    FROM matches
+
+    UNION
+
+    SELECT team2 AS team
+    FROM matches
+) AS teams
+WHERE team LIKE '%Royal%';
+
+
+-- 43)Find cities whose names contain the letter a.
+select city from matches
+group by city
+having city  like '%a%';
+
+-- 44) Find matches where player_of_match is NULL.
+
+select * from matches
+where player_of_match is not null;
+
+-- 45)Count how many matches have no umpire3.
+SELECT COUNT(*) AS no_umpire3
+FROM matches
+WHERE umpire3 IS NULL;
+
+-- 46)Find matches played after 2018-01-01.
+select * from matches
+where date > 2018-01-01;
+
+-- 47) Find the latest match date.
+select date from matches
+order by date desc
+limit 1;
+
+-- 48)Find the number of matches played in each month.
+SELECT 
+    MONTH(date) AS month,
+    COUNT(*) AS total_matches
+FROM matches
+GROUP BY MONTH(date)
+ORDER BY month;
+
+-- 49) Find matches where win_by_wickets is greater than the average winning wickets.
+SELECT *
+FROM matches
+WHERE win_by_wickets > (
+    SELECT AVG(win_by_wickets)
+    FROM matches
+);
+
+-- 50) Create a column showing `'Batting First'` 
+-- when `toss_decision = 'bat'`, otherwise `'Fielding First'`.  
+SELECT 
+    toss_decision,
+    CASE
+        WHEN toss_decision = 'bat' THEN 'Batting First'
+        ELSE 'Fielding First'
+    END AS batting_or_fielding
+FROM matches;
+--  51) Create a column classifying matches as 
+-- 'High Margin' when win_by_runs > 50, otherwise 'Low Margin'.
+SELECT 
+*,
+    case 
+    when win_by_runs > 50 then 'High Margin'
+    else 'Low Margin'
+    end as classifying_matches
+FROM
+    matches;
+-- 52) Categorize winning runs into Low, Medium, and High.
+SELECT 
+*,
+    case 
+    when win_by_runs < 50 then 'low'
+    when win_by_runs > 50 then 'medium'
+    else 'Low '
+    end as Categorize_winning_runs
+FROM
+    matches;
+    
+-- 53 Create a column showing 'DLS Match' or 'Normal Match'. 
+select 
+* ,
+case 
+when dl_applied = 0 then 'Normal Match '
+else 'DLS Match'
+end as 'DLS'
+FROM
+    matches;
+-- 54) Show 'Won by Runs' when win_by_runs > 0, otherwise 'Won by Wickets'.
+select 
+* ,
+case 
+when win_by_runs > 0 then 'Won by Runs'
+else 'Won by Wickets'
+end as 'Won by Runs or win by wickets'
+FROM
+    matches;
+-- 55)Find the number of matches won by runs vs wickets.
+SELECT 
+    CASE
+        WHEN win_by_runs > 0 THEN 'Won by Runs'
+        ELSE 'Won by Wickets'
+    END AS Won_by_Runs_or_win_by_wickets,
+    COUNT(*) AS total_matches
+FROM matches
+GROUP BY Won_by_Runs_or_win_by_wickets;
